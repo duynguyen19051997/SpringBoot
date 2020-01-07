@@ -26,8 +26,15 @@ public class MainController {
     private String errorMessage;
 
     @GetMapping({"/", "/index"})
-    public String index(Model model) {
-        model.addAttribute("message", message);
+    public String index(ModelMap modelMap) {
+        List<String> stringList = new ArrayList<>();
+        stringList.add("Anh duy");
+        stringList.add("Khanh Linh");
+        stringList.add("Ban be");
+
+        modelMap.addAttribute("list", stringList);
+        modelMap.addAttribute("message", message);
+        modelMap.addAttribute("variables", "Nguyen Vu Anh Duy");
         return "index";
     }
 

@@ -5,17 +5,40 @@
     <title>Index</title>
 </head>
 <body>
-<h1>Welcome</h1>
-<h2 th:utext="${message}">..!..</h2>
+    <h1>Welcome</h1>
+    <!--<th:block th:if="${message}">-->
+    <th:block th:unless="!${message}">
+        <h2 th:utext="${message}">..!..</h2>
+    </th:block>
+    <h3 th:utext="${variables}"></h3>
+    <div th:with="first ='Quang Nam'">
+        <h4 th:utext="${first}"></h4>
+    </div>
+    <div>
+        <h3 th:utext="${1 > 2}?'Anh Duy':'Duy Nguyen'"></h3>
+    </div>
+    <th:block th:with="intArr=${1}">
+        <div th:switch="${intArr}">
+            <p th:case="1">Quang Nam Viet Nam</p>
+            <p th:case="*">Ho le</p>
+        </div>
+    </th:block>
+    <a th:href="@{/person-list}">Person List</a >
 
-<!--
+    <h3>#locale</h3>
+    <p th:utext="${#locale.country}"></p>
+    <p th:utext="${#locale.language}"></p>
 
-   In Thymeleaf the equivalent of
-   JSP's ${pageContext.request.contextPath}/edit.html
-   would be @{/edit.html}
+    <h3>#request</h3>
+    <p th:utext="${#request.contextPath}"></p>
+    <p th:utext="${#request.requestURL}"></p>
+    <p th:utext="${#request.requestURI}"></p>
 
-   -->
-
-<a th:href="@{/person-list}">Person List</a>
+    <th:block th:if="${!#lists.isEmpty(list)}">
+        <p th:utext="${#lists.size(list)}"></p>
+        <ul>
+            <li th:each="i: ${#lists.sort(list)}" th:utext="${i}"></li>
+        </ul>
+    </th:block>
 </body>
 </html>
