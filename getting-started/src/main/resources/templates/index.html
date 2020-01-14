@@ -39,6 +39,9 @@
         <ul>
             <li th:each="i: ${#lists.sort(list)}" th:utext="${i}"></li>
         </ul>
+        <select>
+            <option th:each="list: ${list}" th:utext="${list}"></option>
+        </select>
     </th:block>
 </body>
 </html>
