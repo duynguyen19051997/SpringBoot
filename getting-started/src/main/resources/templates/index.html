@@ -25,6 +25,11 @@
     </th:block>
     <a th:href="@{/person-list}">Person List</a >
 
+    <th:block th:if="${code}">
+        <h3>#Happy new year 2020</h3>
+        <p th:utext="${code}"></p>
+    </th:block>
+
     <h3>#locale</h3>
     <p th:utext="${#locale.country}"></p>
     <p th:utext="${#locale.language}"></p>

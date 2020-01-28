@@ -6,7 +6,9 @@
 </head>
 <body>
 <h1>Create a Person:</h1>
-
+<th:block th:if="${happy}">
+    <p th:utext="${happy}"></p>
+</th:block>
 <form th:action="@{/add-person}"
       th:object="${personForm}" method="POST">
     First Name:

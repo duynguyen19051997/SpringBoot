@@ -32,6 +32,7 @@ public class MainController {
         stringList.add("Khanh Linh");
         stringList.add("Ban be");
 
+        modelMap.addAttribute("code","Happy new year");
         modelMap.addAttribute("list", stringList);
         modelMap.addAttribute("message", message);
         modelMap.addAttribute("variables", "Nguyen Vu Anh Duy");
@@ -48,6 +49,7 @@ public class MainController {
     public String showAddPersonPage(ModelMap modelMap) {
         Person personForm = new Person();
         modelMap.addAttribute("personForm", personForm);
+        modelMap.addAttribute("happy", "Happy new year");
         return "add-person";
     }
 
