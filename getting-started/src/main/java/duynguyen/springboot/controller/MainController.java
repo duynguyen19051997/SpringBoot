@@ -32,7 +32,7 @@ public class MainController {
         stringList.add("Khanh Linh");
         stringList.add("Ban be");
 
-        modelMap.addAttribute("code","Happy new year");
+        modelMap.addAttribute("code", "Happy new year");
         modelMap.addAttribute("list", stringList);
         modelMap.addAttribute("message", message);
         modelMap.addAttribute("variables", "Nguyen Vu Anh Duy");
@@ -66,5 +66,20 @@ public class MainController {
         }
         modelMap.addAttribute("errorMessage", errorMessage);
         return "add-person";
+    }
+
+    @GetMapping("/home")
+    public String home() {
+        return "home";
+    }
+
+    @GetMapping("/products")
+    public String products() {
+        return "products";
+    }
+
+    @GetMapping("/about")
+    public String about() {
+        return "about";
     }
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>App Fragments</title>
+</head>
+<body>
+    <ul th:fragment="nav-default">
+        <li><a th:href="@{/home}">Home</a></li>
+        <li><a th:href="@{/products}">Products</a></li>
+        <li><a th:href="@{/about}">About</a></li>
+    </ul>
+
+    <ul th:fragment="nav-admin">
+        <li><a th:href="@{/admin/product}">Products Management</a></li>
+        <li><a th:href="@{/admin/other}">Other Management</a></li>
+    </ul>
+
+    <footer th:fragment="copyright">
+        Nguyen Vu Anh Duy
+    </footer>
+
+</body>
+</html>
