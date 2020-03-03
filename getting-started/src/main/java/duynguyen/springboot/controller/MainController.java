@@ -1,6 +1,8 @@
 package duynguyen.springboot.controller;
 
 import duynguyen.springboot.model.bean.Person;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import java.util.List;
 @Controller
 public class MainController {
     private static List<Person> persons = new ArrayList<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
     static {
         persons.add(new Person("Bill", "Gates"));
@@ -24,6 +27,17 @@ public class MainController {
 
     @Value("${error.message}")
     private String errorMessage;
+
+    @ResponseBody
+    @GetMapping("/logging")
+    public String logging() {
+        LOGGER.info("This is INFO");
+        LOGGER.trace("This is TRACE");
+        LOGGER.debug("This is DEBUG");
+        LOGGER.warn("This is WARN");
+        LOGGER.error("This is ERROR");
+        return "Hi, show logging in the console or file";
+    }
 
     @GetMapping({"/", "/index"})
     public String index(ModelMap modelMap) {
