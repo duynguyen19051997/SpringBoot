@@ -36,7 +36,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         UrlLocaleInterceptor localeInterceptor = new UrlLocaleInterceptor();
 
-        registry.addInterceptor(localeInterceptor).addPathPatterns("/en/*", "/fr/*", "/vi/*");
+        registry.addInterceptor(localeInterceptor).addPathPatterns("/en/*", "/fr/*", "/vn/*");
     }
 
 }

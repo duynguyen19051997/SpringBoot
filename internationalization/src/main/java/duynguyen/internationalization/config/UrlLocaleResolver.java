@@ -20,7 +20,7 @@ public class UrlLocaleResolver implements LocaleResolver {
 
         String prefixEn = request.getServletContext().getContextPath() + "/en/";
         String prefixFr = request.getServletContext().getContextPath() + "/fr/";
-        String prefixVi = request.getServletContext().getContextPath() + "/vi/";
+        String prefixVi = request.getServletContext().getContextPath() + "/vn/";
 
         Locale locale = null;
 
@@ -34,7 +34,7 @@ public class UrlLocaleResolver implements LocaleResolver {
         }
         // Vietnamese
         else if (uri.startsWith(prefixVi)) {
-            locale = new Locale("vi", "VN");
+            locale = new Locale("vn", "VN");
         }
         if (locale != null) {
             request.getSession().setAttribute(URL_LOCALE_ATTRIBUTE_NAME, locale);
