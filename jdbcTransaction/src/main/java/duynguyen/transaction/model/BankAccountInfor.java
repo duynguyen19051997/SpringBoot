@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class BankAccountInfor {
     private int id;
-    private String fullName;
+    private String full_name;
     private double balance;
 }
