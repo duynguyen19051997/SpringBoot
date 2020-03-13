@@ -1,10 +1,10 @@
-package duynguyen.springjdbctransaction;
+package duynguyen.transaction;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringjdbctransactionApplicationTests {
+class TransactionApplicationTests {
 
     @Test
     void contextLoads() {
