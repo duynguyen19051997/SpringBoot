@@ -9,7 +9,7 @@ import java.sql.SQLException;
 public class BankAccountMapper implements RowMapper<BankAccountInfor> {
     @Override
     public BankAccountInfor mapRow(ResultSet rs, int i) throws SQLException {
-        return new BankAccountInfor(rs.getInt("ID"),
-                rs.getString("FULLNAME"), rs.getDouble("BALANCE"));
+        return new BankAccountInfor(rs.getInt("id"),
+                rs.getString("full_name"), rs.getDouble("balance"));
     }
 }
