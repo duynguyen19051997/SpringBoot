@@ -22,12 +22,17 @@
         <th>ID</th>
         <th>Full Name</th>
         <th>Balance</th>
+        <th>Function</th>
     </tr>
     <th:block th:if="${accountInfos}">
     <tr th:each="accountInfo : ${accountInfos}">
         <td th:utext="${accountInfo.id}">..</td>
         <td th:utext="${accountInfo.full_name}">..</td>
         <td th:utext="${accountInfo.balance}">..</td>
+        <td>
+            <a th:href="@{'/update/' + ${accountInfo.id}}">Update</a> |
+            <a th:href="@{'/delete/' + ${accountInfo.id}}">Delete</a>
+        </td>
     </tr>
     </th:block>
 

@@ -19,30 +19,39 @@ public class BankAccountDAO {
     private EntityManager entityManager;
 
     /*
+     * Find All Bank Accounts
+     * @return list
+     */
+    public List<BankAccountInfo> findAll() {
+        String sql = "Select new " + BankAccountInfo.class.getName()
+            + "(id, full_name, balance) "
+            + " from " + BankAccount.class.getName();
+        TypedQuery<BankAccountInfo> query = entityManager.createQuery(sql, BankAccountInfo.class);
+        return query.getResultList();
+    }
+
+    /*
      * Find  Bank Account by Id
-     * @return Object
+     * @return { int }
      */
     public BankAccount findById(int id) {
         return this.entityManager.find(BankAccount.class, id);
     }
 
-    public BankAccount updateById(BankAccount bankAccountInfo) {
-        String sql = "UPDATE " + BankAccount.class.getName() + " SET balance = " + bankAccountInfo.getBalance()
-            + " WHERE id = " + bankAccountInfo.getId();
-        return (BankAccount) this.entityManager.createQuery(sql,
-            BankAccountInfo.class);
+    public int updateById(BankAccount acc) {
+        String sql = "UPDATE " + BankAccount.class.getName() + " SET balance = " + acc.getBalance()
+            + ", full_name = '" + acc.getFull_name() + "' WHERE id = " + acc.getId();
+        return this.entityManager.createQuery(sql).executeUpdate();
     }
 
     /*
-     * Find All Bank Accounts
-     * @return list
-     */
-    public List<BankAccountInfo> findAll() {
-        String sql = "Select new " + BankAccountInfo.class.getName() //
-            + "(e.id,e.full_name,e.balance) " //
-            + " from " + BankAccount.class.getName() + " e ";
-        TypedQuery<BankAccountInfo> query = entityManager.createQuery(sql, BankAccountInfo.class);
-        return query.getResultList();
+     * Delete a Bank Account
+     * @Param {id}
+     * @return {int}
+     * */
+    public int deleteOneById(int id) {
+        String sql = "DELETE FROM " + BankAccount.class.getName() + " WHERE id = " + id;
+        return this.entityManager.createQuery(sql).executeUpdate();
     }
 
     /*
@@ -57,7 +66,8 @@ public class BankAccountDAO {
         if (account.getBalance() + amount < 0) {
             throw new BankAccountException("Not enough money");
         }
-        if (this.updateById(account) != null) {
+        account.setBalance(account.getBalance() + amount);
+        if (this.updateById(account) > 0) {
             System.out.println("Add amount success");
         } else {
             System.out.println("Add amount fail");
