@@ -46,7 +46,6 @@ public class BankAccountDAO extends JdbcDaoSupport {
             queryForObject(FIND_BANK_ACCOUNT, new Object[]{id}, new BankAccountMapper()) : null;
     }
 
-
     /*
      *  add amount to bank account
      * @param {id, amount}
