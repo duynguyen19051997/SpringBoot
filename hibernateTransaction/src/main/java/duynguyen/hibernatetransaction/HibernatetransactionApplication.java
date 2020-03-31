@@ -1,5 +1,10 @@
 package duynguyen.hibernatetransaction;
 
+import java.util.Objects;
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -14,23 +19,20 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
-import javax.sql.DataSource;
-import java.util.Objects;
-import java.util.Properties;
-
 @SpringBootApplication
-@EnableAutoConfiguration(exclude = {
-    DataSourceAutoConfiguration.class,
-    DataSourceTransactionManagerAutoConfiguration.class,
+
+@EnableAutoConfiguration(exclude = { //
+    DataSourceAutoConfiguration.class, //
+    DataSourceTransactionManagerAutoConfiguration.class, //
     HibernateJpaAutoConfiguration.class})
 public class HibernatetransactionApplication {
+
     @Autowired
     private Environment env;
 
     public static void main(String[] args) {
         SpringApplication.run(HibernatetransactionApplication.class, args);
     }
-
 
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
@@ -83,4 +85,5 @@ public class HibernatetransactionApplication {
 
         return transactionManager;
     }
+
 }

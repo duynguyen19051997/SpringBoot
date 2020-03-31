@@ -3,6 +3,7 @@ package duynguyen.hibernatetransaction.dao;
 import duynguyen.hibernatetransaction.entity.BankAccount;
 import duynguyen.hibernatetransaction.exception.BankTransactionException;
 import duynguyen.hibernatetransaction.model.BankAccountInfo;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,8 @@ public class BankAccountDAO {
     /* findAll
      */
     public List<BankAccountInfo> findAll() {
-        String sql = "SELECT NEW " + BankAccountInfo.class.getName() + "(e.id, e.full_name, e.balance) FROM "
-            + BankAccount.class.getName() + " AS e";
         Session session = this.sessionFactory.getCurrentSession();
-        return session.createQuery(sql, BankAccountInfo.class).getResultList();
+        return (List<BankAccountInfo>) session.get(BankAccount.class, "");
     }
 
     /* updateById
