@@ -2,9 +2,8 @@ package duynguyen.mongodb.custom;
 
 import com.mongodb.client.result.UpdateResult;
 import duynguyen.mongodb.model.Employee;
+import duynguyen.mongodb.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public class EmployeeRepositoryCustomImpl implements EmployeeRepositoryCustom {
@@ -19,18 +19,13 @@ public class EmployeeRepositoryCustomImpl implements EmployeeRepositoryCustom {
     @Autowired
     private MongoTemplate mongoTemplate;
 
+    @Autowired
+    private EmployeeRepository er;
+
     @Override
     public int getMaxEmpId() {
-        Query query = new Query();
-        Sort s = new Sort(Direction.DESC ,"id");
-        
-        query.with(s);
-        query.limit(1);
-        Employee maxObject = mongoTemplate.findOne(query, Employee.class);
-        if (maxObject == null) {
-            return 0;
-        }
-        return maxObject.getId();
+        List<Employee> list = mongoTemplate.findAll(Employee.class);
+        return list.size();
     }
 
     @Override
