@@ -23,6 +23,7 @@ public class EmployeeRepositoryCustomImpl implements EmployeeRepositoryCustom {
     public int getMaxEmpId() {
         Query query = new Query();
         Sort s = new Sort(Direction.DESC ,"id");
+        
         query.with(s);
         query.limit(1);
         Employee maxObject = mongoTemplate.findOne(query, Employee.class);
