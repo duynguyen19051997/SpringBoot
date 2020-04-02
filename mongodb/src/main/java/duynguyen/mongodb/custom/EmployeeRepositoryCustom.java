@@ -1,7 +1,5 @@
 package duynguyen.mongodb.custom;
 
-import duynguyen.mongodb.model.Employee;
-
 import java.util.Date;
 
 public interface EmployeeRepositoryCustom {
