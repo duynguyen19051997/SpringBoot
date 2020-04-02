@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee</title>
+
+    <style>
+        th, td {
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+<!-- Include _menu.html -->
+<th:block th:include="/_menu"></th:block>
+
+<h3 th:if="${message!=null}"
+     style="color:red;font-style:italic" th:utext="${message}">..</h3>
+<h2>List Of Employees</h2>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+        <th>Emp_No</th>
+        <th>Date</th>
+        <th>Function</th>
+    </tr>
+    <th:block th:if="${employees}">
+        <tr th:each="employee : ${employees}">
+            <td th:utext="${employee.id}">..</td>
+            <td th:utext="${employee.fullName}">..</td>
+            <td th:utext="${employee.empNo}">..</td>
+            <td th:utext="${employee.hireDate}">..</td>
+            <td>
+                <a th:href="@{'/update/' + ${employee.id}}">Update</a> |
+                <a th:href="@{'/delete/' + ${employee.id}}">Delete</a>
+            </td>
+        </tr>
+    </th:block>
+
+</table>
+</body>
+</html>

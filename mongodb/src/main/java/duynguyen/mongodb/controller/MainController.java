@@ -5,16 +5,16 @@ import duynguyen.mongodb.model.Employee;
 import duynguyen.mongodb.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 @Controller
 public class MainController {
-    private static final String[] NAMES = {"Duy", "Linh", "Long"};
 
     @Autowired
     private EmployeeRepositoryCustom erc;
@@ -22,76 +22,96 @@ public class MainController {
     @Autowired
     private EmployeeRepository er;
 
-    @ResponseBody
+    /*
+     * Home Page
+     * */
     @GetMapping("/home")
-    public String home() {
-        String html = "";
-        html += "<ul>";
-        html += " <li><a href='/test-insert'>Test Insert</a></li>";
-        html += " <li><a href='/show-all'>Show All Employee</a></li>";
-        html += " <li><a href='/show'>Show All 'Duy'</a></li>";
-        html += " <li><a href='/delete-all'>Delete All Employee</a></li>";
-        html += " <li><a href='/update'>Update</a></li>";
-        html += "</ul>";
-        return html;
-    }
-
-    @ResponseBody
-    @GetMapping("/test-insert")
-    public String testInsert() {
-
-        int id = erc.getMaxEmpId() + 1;
-        int idx = (int) (id % NAMES.length);
-        String fullName = NAMES[idx] + " " + id;
-        String empNo = "E" + id;
-        Employee employee = new Employee(id, empNo, fullName, new Date());
-
-        er.insert(employee);
-
-        return "Inserted: " + employee.toString();
-    }
-
-    @ResponseBody
-    @GetMapping("/show-all")
-    public String showAllEmployee() {
+    public String home(ModelMap modelMap) {
         List<Employee> employees = er.findAll();
+        modelMap.addAttribute("employees", employees);
+        modelMap.addAttribute("message", "");
+        return "home";
+    }
 
-        StringBuilder html = new StringBuilder();
-        for (Employee emp : employees) {
-            html.append(emp).append("<br>");
+    /*
+     * Insert a new Employee
+     * */
+    @GetMapping("/insert")
+    public String insertNewEmployee(ModelMap modelMap) {
+        modelMap.addAttribute("employee", new Employee());
+        return "insert";
+    }
+
+    /*
+     * Insert a new Employee, method: POST
+     * */
+    @PostMapping("/insert")
+    public String processInsertNewEmployee(@ModelAttribute("employee") Employee employee) {
+        try {
+            int id = erc.getMaxEmpId() + 1;
+            employee.setId(id);
+            employee.setHireDate(new Date());
+            System.out.println(employee);
+            er.insert(employee);
+            return "redirect:/home";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "insert";
         }
-
-        return html.toString();
     }
 
-    @ResponseBody
-    @GetMapping("/show")
-    public String showFullName() {
-        List<Employee> employees = er.findByFullNameLike("Duy");
-
-        StringBuilder html = new StringBuilder();
-        for (Employee emp : employees) {
-            html.append(emp).append("<br>");
+    /*
+     * Update an employee
+     * */
+    @GetMapping("/update/{id}")
+    public String updateEmployeeById(@PathVariable("id") Integer id, ModelMap modelMap) {
+        try {
+            Optional<Employee> employee = er.findById(id);
+            modelMap.addAttribute("employee", employee.get());
+            return "update";
+        } catch (NumberFormatException e) {
+            System.out.println("ID not found!");
+            modelMap.addAttribute("message", "ID not found!");
+            return "redirect:/home";
         }
-
-        return html.toString();
     }
 
-    @ResponseBody
-    @GetMapping("/update")
-    public String updateEmployee() {
-        int id = erc.getMaxEmpId();
-        Optional<Employee> employee = er.findById(id);
-        erc.updateEmployee(employee.get().getEmpNo(), "Anh Duy", new Date());
-        Optional<Employee> newEmployee = er.findById(id);
-        return newEmployee.get().toString();
+    /*
+     * Update an employee, method: POST
+     * */
+    @PostMapping("/update")
+    public String processUpdateAnEmployee(@ModelAttribute("employee") Employee employee, ModelMap modelMap) {
+        try {
+            employee.setHireDate(new Date());
+            int result = erc.updateEmployee(employee);
+            if (result > 0) {
+                modelMap.addAttribute("message", "Update Success with id = " + employee.getId());
+                return "redirect:/home";
+            }
+            modelMap.addAttribute("message", "Update Fail");
+            return "redirect:/home";
+        } catch (Exception e) {
+            return "update";
+        }
     }
 
-    @ResponseBody
+    @GetMapping("/delete/{id}")
+    public String deleteEmployee(@PathVariable("id") Integer id, ModelMap modelMap) {
+        try {
+            er.deleteById(id);
+            modelMap.addAttribute("message", "Delete Success with id = " + id);
+            return "redirect:/home";
+        } catch (NumberFormatException e) {
+            modelMap.addAttribute("message", "ID not Found");
+            return "redirect:/home";
+        }
+    }
+
     @GetMapping("/delete-all")
-    public String deleteAllEmployee() {
+    public String deleteAll(ModelMap modelMap) {
         er.deleteAll();
-
-        return "Deleted!";
+        modelMap.addAttribute("message", "Delete Done");
+        return "redirect:/home";
     }
+
 }

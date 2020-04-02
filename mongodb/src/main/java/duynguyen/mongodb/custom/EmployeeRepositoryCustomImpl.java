@@ -25,15 +25,19 @@ public class EmployeeRepositoryCustomImpl implements EmployeeRepositoryCustom {
     @Override
     public int getMaxEmpId() {
         List<Employee> list = mongoTemplate.findAll(Employee.class);
-        return list.size();
+        if (list.size() > 0) {
+            return list.get(list.size() - 1).getId();
+        }
+        return 0;
     }
 
     @Override
-    public int updateEmployee(String empNo, String fullName, Date hireDate) {
-        Query query = new Query(Criteria.where("empNo").is(empNo));
+    public int updateEmployee(Employee employee) {
+        Query query = new Query(Criteria.where("_id").is(employee.getId()));
         Update update = new Update();
-        update.set("fullName", fullName);
-        update.set("hireDate", hireDate);
+        update.set("fullName", employee.getFullName());
+        update.set("empNo", employee.getEmpNo());
+        update.set("hireDate", employee.getHireDate());
 
         UpdateResult result = this.mongoTemplate.updateFirst(query, update, Employee.class);
 
