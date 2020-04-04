@@ -1,9 +1,10 @@
-<div xmlns:th="http://www.thymeleaf.org"
-     style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
+<div
+  xmlns:th="http://www.thymeleaf.org"
+  style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;"
+>
+  <a th:href="@{/show}">Accounts</a>
 
-    <a th:href="@{/show}">Accounts</a>
+  | &nbsp;
 
-    | &nbsp;
-
-    <a th:href="@{/send-money}">Send Money</a>
+  <a th:href="@{/send-money}">Send Money</a>
 </div>

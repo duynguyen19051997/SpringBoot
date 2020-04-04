@@ -1,36 +1,34 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <title>Bank</title>
-</head>
+  </head>
 
-<body>
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+  <body>
+    <!-- Include _menu.html -->
+    <th:block th:include="/_menu"></th:block>
 
-<h2>Update Bank Account</h2>
+    <h2>Update Bank Account</h2>
 
-<form th:action="@{/update}" th:object="${bankAccount}" method="POST">
-    <table>
-
+    <form th:action="@{/update}" th:object="${bankAccount}" method="POST">
+      <table>
         <tr>
-            <td>id</td>
-            <td><input type="number" th:field="*{id}" readonly/></td>
+          <td>id</td>
+          <td><input type="number" th:field="*{id}" readonly /></td>
         </tr>
         <tr>
-            <td>Full Name</td>
-            <td><input type="text" th:field="*{full_name}"/></td>
+          <td>Full Name</td>
+          <td><input type="text" th:field="*{full_name}" /></td>
         </tr>
         <tr>
-            <td>Balance</td>
-            <td><input type="number" th:field="*{balance}"/></td>
+          <td>Balance</td>
+          <td><input type="number" th:field="*{balance}" /></td>
         </tr>
         <tr>
-            <td>&nbsp;</td>
-            <td><input type="submit" value="Send"/></td>
+          <td>&nbsp;</td>
+          <td><input type="submit" value="Send" /></td>
         </tr>
-    </table>
-</form>
-
-</body>
+      </table>
+    </form>
+  </body>
 </html>

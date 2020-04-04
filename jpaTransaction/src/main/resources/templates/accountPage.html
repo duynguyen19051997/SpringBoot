@@ -1,41 +1,40 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+  <head>
     <title>Bank</title>
 
     <style>
-        th, td {
-            padding: 5px;
-        }
+      th,
+      td {
+        padding: 5px;
+      }
     </style>
+  </head>
 
-</head>
+  <body>
+    <!-- Include _menu.html -->
+    <th:block th:include="/_menu"></th:block>
 
-<body>
-<!-- Include _menu.html -->
-<th:block th:include="/_menu"></th:block>
+    <h2>Accounts</h2>
 
-<h2>Accounts</h2>
-
-<table border="1">
-    <tr>
+    <table border="1">
+      <tr>
         <th>ID</th>
         <th>Full Name</th>
         <th>Balance</th>
         <th>Function</th>
-    </tr>
-    <th:block th:if="${accountInfos}">
-    <tr th:each="accountInfo : ${accountInfos}">
-        <td th:utext="${accountInfo.id}">..</td>
-        <td th:utext="${accountInfo.full_name}">..</td>
-        <td th:utext="${accountInfo.balance}">..</td>
-        <td>
+      </tr>
+      <th:block th:if="${accountInfos}">
+        <tr th:each="accountInfo : ${accountInfos}">
+          <td th:utext="${accountInfo.id}">..</td>
+          <td th:utext="${accountInfo.full_name}">..</td>
+          <td th:utext="${accountInfo.balance}">..</td>
+          <td>
             <a th:href="@{'/update/' + ${accountInfo.id}}">Update</a> |
             <a th:href="@{'/delete/' + ${accountInfo.id}}">Delete</a>
-        </td>
-    </tr>
-    </th:block>
-
-</table>
-</body>
+          </td>
+        </tr>
+      </th:block>
+    </table>
+  </body>
 </html>
