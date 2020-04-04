@@ -21,8 +21,7 @@ public class AppRoleDAO extends JdbcDaoSupport {
      * @return {list<String>}
      * */
     public List<String> getRoleName(int id) {
-        String sql = "SELECT FROM user_roles AS ur " +
-            "INNER ar.role_name JOIN app_roles AS ar ON ar.role_id = ur.role_id WHERE ur.id = ?";
+        String sql = "SELECT ar.role_name FROM app_roles AS ar INNER JOIN user_roles AS ur ON ur.role_id = ar.role_id WHERE ur.id = ?";
         assert this.getJdbcTemplate() != null;
         return this.getJdbcTemplate().queryForList(sql, new Object[]{id}, String.class);
     }

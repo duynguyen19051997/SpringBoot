@@ -26,7 +26,7 @@ public class AppUserDAO extends JdbcDaoSupport {
      * */
     public AppUser findUserByUsername(String username) {
         AppUserMapper appUserMapper = new AppUserMapper();
-        String sql = AppUserMapper.FIND_USER;
+        String sql = AppUserMapper.FIND_USER + " WHERE u.username = ?";
         try {
             assert this.getJdbcTemplate() != null;
             return this.getJdbcTemplate().queryForObject(sql, new Object[]{username}, appUserMapper);

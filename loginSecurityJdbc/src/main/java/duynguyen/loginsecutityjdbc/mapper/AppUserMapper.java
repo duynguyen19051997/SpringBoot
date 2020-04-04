@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AppUserMapper implements RowMapper<AppUser> {
-    public static final String FIND_USER = "SELECT u.id, u.username, u.password  FROM app_user AS u ";
+    public static final String FIND_USER = "SELECT u.id, u.username, u.password  FROM app_users AS u ";
 
     @Override
     public AppUser mapRow(ResultSet resultSet, int i) throws SQLException {
