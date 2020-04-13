@@ -11,6 +11,11 @@ import java.security.Principal;
 
 @Controller
 public class MainController {
+    @GetMapping("/sign-in")
+    public String index() {
+        return "index";
+    }
+
     @GetMapping({"/", "/welcome"})
     public String welcomePage(Model model) {
         model.addAttribute("title", "Welcome");
