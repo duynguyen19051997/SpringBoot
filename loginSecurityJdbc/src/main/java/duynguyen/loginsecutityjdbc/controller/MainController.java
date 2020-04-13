@@ -1,16 +1,54 @@
 package duynguyen.loginsecutityjdbc.controller;
 
+import duynguyen.loginsecutityjdbc.dao.AppUserDAO;
+import duynguyen.loginsecutityjdbc.dao.UserRolesDAO;
+import duynguyen.loginsecutityjdbc.model.AppUser;
 import duynguyen.loginsecutityjdbc.utils.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.math.BigInteger;
 import java.security.Principal;
 
 @Controller
 public class MainController {
+    @Autowired
+    private AppUserDAO appUserDAO;
+
+    @Autowired
+    private UserRolesDAO userRolesDAO;
+
+    @GetMapping("/sign-up")
+    public String signUp(ModelMap modelMap) {
+        AppUser appUser = new AppUser();
+        modelMap.addAttribute("appUser", appUser);
+        return "signup";
+    }
+
+    @PostMapping("/sign-up")
+    public String processSignUp(@ModelAttribute("appUser") AppUser appUser, ModelMap modelMap) {
+        try {
+            AppUser checkUsername = appUserDAO.findUserByUsername(appUser.getUsername());
+            if (checkUsername == null) {
+                BigInteger userId = appUserDAO.insertNewUser(appUser);
+                if (userRolesDAO.insertUserRoles(userId) > 0) {
+                    return "redirect:/sign-in";
+                }
+            }
+            return "signup";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return "signup";
+        }
+    }
+
     @GetMapping("/sign-in")
     public String index() {
         return "index";
