@@ -23,8 +23,8 @@ public class AppRoleDAO {
      *  @return {List<String>}
      * */
     public List<String> getRoleNames(long userId) {
-        String sql = "SELECT ur.appUser.role_name FROM " + UserRole.class.getName() +
-            " AS ur WHERE ur.appUser.user_id = :userId";
+        String sql = "SELECT ur.appRole.roleName FROM " + UserRole.class.getName() +
+            " AS ur WHERE ur.appUser.userId = :userId";
 
         Query query = this.entityManager.createQuery(sql, String.class);
         query.setParameter("userId", userId);
@@ -38,7 +38,7 @@ public class AppRoleDAO {
      * */
     public AppRole findRoleByRoleName(String roleName) {
         try {
-            String sql = "SELECT r.* FROM " + AppRole.class.getName() + " AS r WHERE r.role_name = :roleName";
+            String sql = "SELECT r FROM " + AppRole.class.getName() + " AS r WHERE r.roleName = :roleName";
             Query query = this.entityManager.createQuery(sql, AppRole.class);
             query.setParameter("roleName", roleName);
             return (AppRole) query.getSingleResult();

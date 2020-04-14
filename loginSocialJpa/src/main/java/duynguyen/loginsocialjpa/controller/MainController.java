@@ -4,6 +4,7 @@ import duynguyen.loginsocialjpa.dao.AppUserDAO;
 import duynguyen.loginsocialjpa.entity.AppRole;
 import duynguyen.loginsocialjpa.entity.AppUser;
 import duynguyen.loginsocialjpa.form.AppUserForm;
+import duynguyen.loginsocialjpa.utils.EncrytedPasswordUtils;
 import duynguyen.loginsocialjpa.utils.SecurityUtil;
 import duynguyen.loginsocialjpa.utils.WebUtils;
 import duynguyen.loginsocialjpa.validator.AppUserValidator;
@@ -20,10 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -45,19 +43,6 @@ public class MainController {
     @Autowired
     private AppUserValidator appUserValidator;
 
-    @InitBinder
-    protected void initBinder(WebDataBinder dataBinder) {
-        // Form target
-        Object target = dataBinder.getTarget();
-        if (target == null) {
-            return;
-        }
-        System.out.println("Target=" + target);
-
-        if (target.getClass() == AppUserForm.class) {
-            dataBinder.setValidator((Validator) appUserValidator);
-        }
-    }
 
 
     @GetMapping({"/", "/welcome"})
@@ -116,9 +101,9 @@ public class MainController {
     // User login with social networking,
     // but does not allow the app to view basic information
     // application will redirect to page / signin.
-    @GetMapping("/sign-in")
+    @GetMapping("/signin")
     public String signInPage(ModelMap modelMap) {
-        return "redirect:/login";
+        return "redirect:/sign-up";
     }
 
     @GetMapping("/sign-up")
@@ -131,6 +116,7 @@ public class MainController {
         //
         AppUserForm myForm = null;
         //
+        System.out.println(connection);
         if (connection != null) {
             myForm = new AppUserForm(connection);
         } else {
@@ -155,6 +141,7 @@ public class MainController {
 
         try {
             registered = appUserDAO.registerNewUser(appUserForm, roleNames);
+            System.out.println(registered);
         } catch (Exception ex) {
             ex.printStackTrace();
             modelMap.addAttribute("errorMessage", "Error " + ex.getMessage());
@@ -175,5 +162,12 @@ public class MainController {
         SecurityUtil.logInUser(registered, roleNames);
 
         return "redirect:/user-info";
+    }
+
+    @GetMapping("/check/{pass}")
+    public String checkPassword(ModelMap modelMap, @PathVariable("pass") String pass) {
+        String password = EncrytedPasswordUtils.encrytePassword(pass);
+        modelMap.addAttribute("password", password);
+        return "check";
     }
 }

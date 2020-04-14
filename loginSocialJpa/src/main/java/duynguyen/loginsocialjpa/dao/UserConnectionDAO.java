@@ -21,14 +21,11 @@ public class UserConnectionDAO {
      * */
     public UserConnection findUserConnectionByUserProviderId(String userProviderId) {
         try {
-            String sql = "SELECT uc.* FROM " + UserConnection.class.getName() +
+            String sql = "SELECT uc FROM " + UserConnection.class.getName() +
                 " AS uc WHERE uc.user_provider_id = :userProviderId";
             Query query = this.entityManager.createQuery(sql, UserConnection.class);
             query.setParameter("userProviderId", userProviderId);
             List<UserConnection> list = query.getResultList();
-            for (UserConnection uc : list) {
-                System.out.println(uc);
-            }
             return list.isEmpty() ? null : list.get(0);
         } catch (NoResultException e) {
             return null;

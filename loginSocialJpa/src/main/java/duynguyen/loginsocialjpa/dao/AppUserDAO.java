@@ -9,15 +9,18 @@ import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionKey;
 import org.springframework.social.connect.UserProfile;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Repository
+@Transactional
 public class AppUserDAO {
 
     @Autowired
@@ -33,7 +36,7 @@ public class AppUserDAO {
      * */
     public AppUser findUserByUserId(long userId) {
         try {
-            String sql = "SELECT u.* FROM " + AppUser.class.getName() + " AS u WHERE u.userId = :userId";
+            String sql = "SELECT u FROM " + AppUser.class.getName() + " AS u WHERE u.userId = :userId";
             Query query = this.entityManager.createQuery(sql, AppUser.class);
             query.setParameter("userId", userId);
             return (AppUser) query.getSingleResult();
@@ -49,7 +52,7 @@ public class AppUserDAO {
      * */
     public AppUser findUserByUsername(String username) {
         try {
-            String sql = "SELECT u.* FROM " + AppUser.class.getName() + " AS u WHERE u.username = :username";
+            String sql = "SELECT u FROM " + AppUser.class.getName() + " AS u WHERE u.username = :username";
             Query query = this.entityManager.createQuery(sql, AppUser.class);
             query.setParameter("username", username);
             return (AppUser) query.getSingleResult();
@@ -65,7 +68,7 @@ public class AppUserDAO {
      * */
     public AppUser findUserByEmail(String email) {
         try {
-            String sql = "SELECT u.* FROM " + AppUser.class.getName() + " AS u WHERE u.email = :email";
+            String sql = "SELECT u FROM " + AppUser.class.getName() + " AS u WHERE u.email = :email";
             Query query = this.entityManager.createQuery(sql, AppUser.class);
             query.setParameter("email", email);
             return (AppUser) query.getSingleResult();
@@ -144,14 +147,15 @@ public class AppUserDAO {
      *  @return {AppUser}
      * */
     public AppUser registerNewUser(AppUserForm appUserForm, List<String> roleNames) {
+        System.out.println(appUserForm);
         AppUser appUser = new AppUser();
         appUser.setUsername(appUserForm.getUserName());
         appUser.setEmail(appUserForm.getEmail());
         appUser.setFirstName(appUserForm.getFirstName());
         appUser.setLastName(appUserForm.getLastName());
         appUser.setEnabled(true);
-        String encrytedPassword = EncrytedPasswordUtils.encrytePassword(appUserForm.getPassword());
-        appUser.setPassword(encrytedPassword);
+        String password = EncrytedPasswordUtils.encrytePassword(appUserForm.getPassword());
+        appUser.setPassword(password);
         this.entityManager.persist(appUser);
         this.entityManager.flush();
 

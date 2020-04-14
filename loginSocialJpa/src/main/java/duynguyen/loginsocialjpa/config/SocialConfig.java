@@ -30,7 +30,6 @@ import java.util.Objects;
 @PropertySource("classpath: social-cfg.properties")
 public class SocialConfig implements SocialConfigurer {
     private boolean autoSignUp = false;
-    private Environment env;
 
     @Autowired
     private DataSource dataSource;
