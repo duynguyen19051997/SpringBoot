@@ -1,5 +1,7 @@
 package duynguyen.loginsocialjpa.config;
 
+import duynguyen.loginsocialjpa.dao.AppUserDAO;
+import duynguyen.loginsocialjpa.social.ConnectionSignUpImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +34,9 @@ public class SocialConfig implements SocialConfigurer {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private AppUserDAO appUserDAO;
 
     // @env: read from social-cfg.properties file.
     @Override
