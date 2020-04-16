@@ -1,0 +1,15 @@
+version: '3'
+services:
+  localhost:
+    container_name: crud
+    image: crud:5.7
+    environment:
+      MYSQL_DATABASE: crud
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3001:3001"
+    restart: always
+    command: mvn clean spring-boot:run
+    depends_on:
+      - localhost
