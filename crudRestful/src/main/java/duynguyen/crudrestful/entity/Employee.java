@@ -1,8 +1,11 @@
 package duynguyen.crudrestful.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "employees")
@@ -22,4 +25,12 @@ public class Employee {
 
     @Column(name = "position", length = 255, nullable = true)
     private String position;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Date updatedAt;
 }
