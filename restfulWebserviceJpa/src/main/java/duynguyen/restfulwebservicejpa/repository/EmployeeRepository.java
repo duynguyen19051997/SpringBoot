@@ -18,6 +18,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     void deleteById(int empId);
 
-    @Query("SELECT e FROM Employee AS e")
+    @Query("SELECT e FROM Employee AS e ORDER BY e.empId DESC")
     Page<Employee> findEmployees(Pageable pageable);
 }
