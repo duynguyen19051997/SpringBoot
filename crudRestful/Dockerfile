@@ -1,18 +1,19 @@
-# For Java 8, try this
-FROM openjdk:8-jdk-alpine
+FROM maven:3.5.2-jdk-8-alpine AS MAVEN_BUILD
 
-# Add Maintainer Info
-LABEL maintainer="nguyenvuanhduy1905@gmail.com"
+MAINTAINER Duy Nguyen
 
-WORKDIR /app/
+COPY pom.xml /build/
 
-EXPOSE 3000
+COPY src /build/src/
 
-# Refer to Maven build -> finalName
-ARG JAR_FILE=target/crudrestful-0.0.1-SNAPSHOT.jar
+WORKDIR /build/
 
-# cp target/spring-boot-web.jar /opt/app/app.jar
-ADD ${JAR_FILE} crud-restful.jar
+RUN mvn package
 
-# java -jar /opt/app/app.jar
-ENTRYPOINT ["java","-jar","crud-restful.jar"]
+FROM openjdk:8-jre-alpine
+
+WORKDIR /app
+
+COPY --from=MAVEN_BUILD /build/target/crudrestful-0.0.1-SNAPSHOT.jar /app/
+
+ENTRYPOINT ["java", "-jar", "crudrestful-0.0.1-SNAPSHOT.jar"]
