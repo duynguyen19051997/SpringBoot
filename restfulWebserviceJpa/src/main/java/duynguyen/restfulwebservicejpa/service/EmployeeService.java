@@ -3,12 +3,18 @@ package duynguyen.restfulwebservicejpa.service;
 import duynguyen.restfulwebservicejpa.entity.Employee;
 import duynguyen.restfulwebservicejpa.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    public Page<Employee> findEmployee(Pageable pageable) {
+        return employeeRepository.findEmployees(pageable);
+    }
 
     public ResultService findAll() {
         ResultService result = new ResultService();

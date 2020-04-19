@@ -1,0 +1,35 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Data Paging + Sorting</title>
+    <style>
+        table, th, td, tr {
+            border: 1px solid black;
+        }
+
+        td {
+            padding-right: 30px;
+        }
+    </style>
+</head>
+<body>
+<h1>Demo Spring Boot + Spring Data Paging / Sorting</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Full Name</th>
+        <th>Position</th>
+        <th>Created At</th>
+        <th>Updated At</th>
+    </tr>
+    <th:block th:each="e : ${list}">
+        <tr>
+            <td><p th:text="${e.empId}"></p></td>
+            <td><p th:text="${e.fullName}"></p></td>
+            <td><p th:text="${e.position}"></p></td>
+            <td><p th:text="${e.createdAt}"></p></td>
+            <td><p th:text="${e.updatedAt}"></p></td>
+        </tr>
+    </th:block>
+</table>
+</body>
+</html>

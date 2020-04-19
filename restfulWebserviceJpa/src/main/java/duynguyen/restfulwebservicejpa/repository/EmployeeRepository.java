@@ -1,7 +1,10 @@
 package duynguyen.restfulwebservicejpa.repository;
 
 import duynguyen.restfulwebservicejpa.entity.Employee;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,4 +17,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Optional<Employee> findByEmpId(int empId);
 
     void deleteById(int empId);
+
+    @Query("SELECT e FROM Employee AS e")
+    Page<Employee> findEmployees(Pageable pageable);
 }
