@@ -1,9 +1,11 @@
 package duynguyen.securityjwt.config;
 
 
+import duynguyen.securityjwt.handle.CustomAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -44,6 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    @Bean
+    public CustomAccessDeniedHandler customAccessDeniedHandler() {
+        return new CustomAccessDeniedHandler();
+    }
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -59,17 +66,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
 
             // dont authenticate this particular request
-            .authorizeRequests().antMatchers("/authenticate").permitAll().
+            .authorizeRequests().antMatchers("/authenticate", "/check").permitAll()
 
             // all other requests need to be authenticated
-                anyRequest().authenticated().and().
+            .antMatchers(HttpMethod.GET, "/api/v1/**").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+            .antMatchers(HttpMethod.POST, "/api/v1/**").access("hasRole('ROLE_ADMIN')")
+            .antMatchers(HttpMethod.PUT, "/api/v1/**").access("hasRole('ROLE_ADMIN')")
+            .antMatchers(HttpMethod.DELETE, "/api/v1/**").access("hasRole('ROLE_ADMIN')")
+            .and()
 
             // make sure we use stateless session; session won't be used to
             // store user's state.
-                exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+            .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
-        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+            .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }
 }

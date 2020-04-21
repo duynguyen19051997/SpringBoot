@@ -44,9 +44,8 @@ public class JwtAuthenticationController {
         final UserDetails userDetails = userDetailsService
             .loadUserByUsername(authenticationRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        System.out.println(token);
+        System.out.println("[TOKEN]: " + token);
         return ResponseEntity.ok(new JwtResponse(token));
-
     }
 
     private void authenticate(String username, String password) throws Exception {

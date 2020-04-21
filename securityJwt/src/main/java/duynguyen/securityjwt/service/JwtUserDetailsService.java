@@ -28,17 +28,15 @@ public class JwtUserDetailsService implements UserDetailsService {
             System.out.println("User not found! " + username);
             throw new UsernameNotFoundException("User " + username + " was not found in the database");
         }
-        System.out.println("[User Info] => " + userInfo);
+        System.out.println("[User Info]: " + userInfo);
 
         List<String> roleNames = userRolesService.findRoleName(userInfo.getUserId());
 
         List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
 
-
         if (roleNames != null) {
             for (String role : roleNames) {
                 // ROLE_USER, ROLE_ADMIN,..
-                System.out.println(role);
                 GrantedAuthority authority = new SimpleGrantedAuthority(role);
                 grantList.add(authority);
             }
