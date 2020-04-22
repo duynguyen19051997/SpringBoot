@@ -1,10 +1,15 @@
 package duynguyen.securityjwt.config;
 
 
+import duynguyen.securityjwt.entity.UserEntity;
+import duynguyen.securityjwt.repository.UserRepository;
+import duynguyen.securityjwt.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -25,8 +30,29 @@ public class JwtTokenUtil implements Serializable {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @Value("${jwt.secret}")
     private String secret;
+
+
+    /*
+     * Get User From Token
+     * */
+    public UserEntity getUserFromToken(String token) {
+        try {
+            String[] tokenValue = token.split(" ");
+            String username = jwtTokenUtil.getUsernameFromToken(tokenValue[1]);
+            UserEntity userInfo = userService.findUserByUsername(username);
+            return userInfo;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
 
     /*
      * retrieve username from jwt token

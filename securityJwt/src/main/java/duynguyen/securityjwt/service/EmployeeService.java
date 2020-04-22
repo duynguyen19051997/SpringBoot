@@ -15,4 +15,8 @@ public class EmployeeService {
     public List<Employee> findAll() {
         return employeeRepository.findAll();
     }
+
+    public Employee save(Employee employee) {
+        return employeeRepository.save(employee);
+    }
 }
