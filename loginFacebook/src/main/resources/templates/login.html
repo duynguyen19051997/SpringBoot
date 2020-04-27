@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Spring Boot Security Hello</title>
+</head>
+<body>
+<h2>Spring Boot Security Hello</h2>
+<a href="https://www.facebook.com/dialog/oauth?client_id=233735944635232&redirect_uri=https://localhost:8443/login-facebook">Login Facebook</a>
+<br/>
+<form name='login-form' th:action="@{/j_spring_security_login}" method='POST'>
+    <table>
+        <tr>
+            <td>Username:</td>
+            <td><input type='text' name='username' value=''></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type='password' name='password' /></td>
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="submit" /></td>
+        </tr>
+    </table>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+</form>
+</body>
+</html>
