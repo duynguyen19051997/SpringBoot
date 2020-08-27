@@ -1,0 +1,1 @@
+<h2 class="home">Welcome to Home page</h2>
